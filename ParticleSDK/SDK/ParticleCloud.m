@@ -632,13 +632,15 @@ static NSString *const kDefaultoAuthClientSecret = @"particle";
 
 -(NSURLSessionDataTask *)getDevices:(nullable void (^)(NSArray<ParticleDevice *> * _Nullable particleDevices, NSError * _Nullable error))completion
 {
+    NSMutableDictionary *httpHeader =[NSMutableDictionary dictionary];
     if (self.session.accessToken) {
         NSString *authorization = [NSString stringWithFormat:@"Bearer %@", self.session.accessToken];
-        [self.manager.requestSerializer setValue:authorization forHTTPHeaderField:@"Authorization"];
+        //[self.manager.requestSerializer setValue:authorization forHTTPHeaderField:@"Authorization"];
+        [httpHeader setObject:authorization forKey:@"Authorization"];
     }
 
     [ParticleLogger logInfo:NSStringFromClass([self class]) format:@"GET %@", @"/v1/devices"];
-    NSURLSessionDataTask *task = [self.manager GET:@"/v1/devices" parameters:nil headers:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject)
+    NSURLSessionDataTask *task = [self.manager GET:@"/v1/devices" parameters:nil headers:httpHeader progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject)
     {
         [ParticleLogger logInfo:NSStringFromClass([self class]) format:@"%@ (%i)", @"/v1/devices", (int)((NSHTTPURLResponse *)task.response).statusCode];
         [ParticleLogger logComplete:NSStringFromClass([self class]) format:@"%@", responseObject];
