@@ -635,7 +635,7 @@ static NSString *const kDefaultoAuthClientSecret = @"particle";
     NSMutableDictionary *httpHeader =[NSMutableDictionary dictionary];
     if (self.session.accessToken) {
         NSString *authorization = [NSString stringWithFormat:@"Bearer %@", self.session.accessToken];
-        //[self.manager.requestSerializer setValue:authorization forHTTPHeaderField:@"Authorization"];
+        //[self.manager.requestSerializer setValue:authorization forHTTPHeaderField:@"Authorization"]; // mayot need to comment
         [httpHeader setObject:authorization forKey:@"Authorization"];
     }
 
